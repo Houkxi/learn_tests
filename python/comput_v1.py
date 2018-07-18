@@ -1,6 +1,7 @@
 import argparse
 import re
 from side_fcts import is_all_float
+from side_fcts import calc_fraction
 import degree_solve
 
 parser = argparse.ArgumentParser(description='Write a Second degree equation')
@@ -86,7 +87,11 @@ def add_up_xs(tab, pattern, ret=None, atmp=0):
 				tmp = re.search('1', '1')
 			else:
 				tmp = re.search('((-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+))', elem)
-			atmp += float(tmp.group(0))
+				if calc_fraction(tmp.group()) != None:
+					tmp = calc_fraction(tmp.group())
+				print '---->', tmp.group()
+			atmp += float(tmp.group())
+			print atmp
 	atmp = round(atmp, 10)
 	print 'Ax = ', atmp
 	if re.search('\.0\Z', str(atmp)) != None:
@@ -103,17 +108,18 @@ def add_up_xs(tab, pattern, ret=None, atmp=0):
 def equation_degree(tab, lvl=2, degree=0):
 	print '*' * 10, 'Equation Degree', '*' * 10
 	for elem in tab:
-		if re.search('\D\^\d+\Z', elem):
-			tmp = re.search('\d+\Z', elem)
-			if int(tmp.group()) > lvl:
-				print 'TOO HIGH of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Max degree lvl =', lvl
-				exit()
-			elif int(tmp.group()) < 0:
-				print 'TOO LOW of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Min degree lvl =', 0
-				exit()
-			print tmp.group()
-			if degree < int(tmp.group()):
-				degree = int(tmp.group())
+		if elem != None:
+			if re.search('\D\^\d+\Z', elem):
+				tmp = re.search('\d+\Z', elem)
+				if int(tmp.group()) > lvl:
+					print 'TOO HIGH of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Max degree lvl =', lvl
+					exit()
+				elif int(tmp.group()) < 0:
+					print 'TOO LOW of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Min degree lvl =', 0
+					exit()
+				print tmp.group()
+				if degree < int(tmp.group()):
+					degree = int(tmp.group())
 	print '*' * 10, 'Ended of Degree', '*' * 10
 	return degree
 
@@ -161,18 +167,13 @@ debug_visu(tab_l, tab_r)
 tab_l = tab_l + tab_r
 debug_visu(tab_l)
 
-dgr = equation_degree(tab_l)
-print 'My Degree = ', dgr
 c = add_up_c(tab_l)
 bx, b = add_up_xs(tab_l, '\D\^1', ret='x^1')
 ax, a = add_up_xs(tab_l, '\D\^2', ret='x^2')
 print ax, '+', bx, '+', c, '= 0'
 
 eqt = [ax, bx, str(c)]
-degr = [a, b , c]
+degr = [float(a), float(b) , float(c)]
 dgr = equation_degree(eqt)
 print 'My Degree = ', dgr
 send_to_degree(eqt, degr, dgr)
-
-delta = (b * b) -4 * (a * c)
-print delta
