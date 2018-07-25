@@ -8,7 +8,7 @@ def one_value(a, b):
 	return res
 
 def two_positives(delta, a, b):
-	print a, b, delta
+	print '\nPositive delta :\n', a, b, delta
 	# my_math.count_every_ten(delta, direction=11, show=1)
 	# tmp = my_math.find_perfect_sqr(delta)
 	# delta -= tmp * tmp
@@ -17,10 +17,18 @@ def two_positives(delta, a, b):
 	b = b * -1
 	x1 = (b - nb) / a
 	x2 = (b + nb) / a
-	print 'X1 =', x1, 'X2 =', x2
+	print 'X1 =', '({0} -'.format(-b), u'\u221a{0})/{1} = '.format(nb, 2*a), x1
+	print 'X2 =', '({0} +'.format(-b), u'\u221a{0})/{1} = '.format(nb, 2*a), x2
 
 def two_complexes(delta, a, b):
-	pass
+	print '\nNegative delta :\n', a, b, delta
+	tmp = my_math.pars_number_in_pairs(delta)
+	nb = my_math.square_root(tmp)
+	# print '({0} +'.format(-b), u'{1}\u221a{0})/{2}'.format(nb, 'i', 2 * a)
+	print '({0} +'.format(-b), u'{1}\u221a{0})'.format(nb, 'i'), '	'*2, '({0} -'.format(-b), u'{1}\u221a{0})'.format(nb, 'i')
+	print '	', 2 * a, '	'*4, 2* a
+	# print '({0}'.format(-b), '+', u'{1}\u221a{0})/(2 * a)'.format(nb, 'i')
+	# print '({0}'.format(-b), '-', u'{1}\u221a{0})/(2 * a)'.format(nb, 'i')
 
 def second_degree(eqt, degr):
 	a = degr[0]
@@ -43,4 +51,8 @@ def first_degree(eqt, degr):
 	print ('x =', tmp)
 
 def no_degree(c):
-	print ('No degree fct')
+	if c == 0:
+		print 'All Numbers would be solution'
+	else:
+		print 'Equation non soluble or with wrong solution'
+	print ('No degree fct', c)

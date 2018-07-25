@@ -74,7 +74,7 @@ class numerical_pars():
 			s = self.already_simplfied(s)
 			return s
 		s = self.fraction_shit(s)
-		if re.search('((\d+ *\** *-*\D\^\d+))', s) != None:
+		if re.search('((\d+ *\** *-*\D\^?(?=\d*)))', s) != None:
 			if  re.search('\D\^0', s) != None:
 				s = re.sub(' *\** *\D\^0', '', s)
 			else:

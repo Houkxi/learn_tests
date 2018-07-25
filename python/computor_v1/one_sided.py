@@ -67,4 +67,5 @@ class one_sided():
 		# print ('+-'* 25, '+')
 		eqt = [ax, bx, str(c)]
 		degr = [float(a), float(b) , float(c)]
+		print eqt, '= 0'
 		return eqt, degr
