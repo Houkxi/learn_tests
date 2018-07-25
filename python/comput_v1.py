@@ -2,6 +2,8 @@ import argparse
 import re
 from side_fcts import is_all_float
 from side_fcts import calc_fraction
+from side_fcts import fraction_shit
+from side_fcts import normed_char
 import degree_solve
 
 parser = argparse.ArgumentParser(description='Write a Second degree equation')
@@ -12,18 +14,18 @@ args = parser.parse_args()
 print (args.str)
 
 def debug_visu(tab1=None, tab2=None):
-	print '*' * 20
+	print ('*' * 20)
 	if tab1 !=  None:
 		i = 0
 		while i < len(tab1):
-			print '+> ', tab1[i]
+			print ('+> ', tab1[i])
 			i += 1
 	if tab2 !=  None:
 		i = 0
 		while i < len(tab2):
-			print '-> ', tab2[i]
+			print ('-> ', tab2[i])
 			i += 1
-	print '*' * 20
+	print ('*' * 20)
 
 def check_str(pattern, s):
 	a = re.search(pattern, s)
@@ -52,6 +54,7 @@ def simplification(s):
 	if already_simplfied(s) != None:
 		s = already_simplfied(s)
 		return s
+	s = fraction_shit(s)
 	if re.search('(( \* \D\^\d+)|( \* \D\^\d+))', s) != None:
 		if  re.search('\D\^0', s) != None:
 			s = re.sub(' \* \D\^0', '', s)
@@ -65,6 +68,7 @@ def simplification(s):
 			s = '1'
 		return s
 	else:
+		print (s)
 		print ('Error of some sort')
 		exit()
 
@@ -72,10 +76,10 @@ def add_up_c(tab, ctmp=0):
 	for elem in tab:
 		if is_all_float(elem) == True:
 			ctmp += float(elem)
-	print ctmp
+	print (ctmp)
 	if re.search('\.0\Z', str(ctmp)) != None:
 		ctmp = int(ctmp)
-		print ctmp
+		print (ctmp)
 	return ctmp
 
 def add_up_xs(tab, pattern, ret=None, atmp=0):
@@ -86,17 +90,18 @@ def add_up_xs(tab, pattern, ret=None, atmp=0):
 			elif re.search('(\A\D\^\d+)', elem):
 				tmp = re.search('1', '1')
 			else:
-				tmp = re.search('((-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+))', elem)
+				tmp = re.search('((-\d+\.\d+)|(\d+\.\d+)|(\d+\.\d+/\d+\.\d+)|(-\d+\.\d+/-\d+\.\d+))|((-\d+\.\d+/\d+\.\d+)|(\d+\.\d+/-\d+\.\d+)|(-\d+/-\d+)|(\d+/\d+)|(-\d+/\d+)|(\d+/-\d+)|(-\d+)|(\d+))', elem)
+				print (tmp.group())
 				if calc_fraction(tmp.group()) != None:
 					tmp = calc_fraction(tmp.group())
-				print '---->', tmp.group()
+				print ('---->', tmp.group())
 			atmp += float(tmp.group())
-			print atmp
+			print (atmp)
 	atmp = round(atmp, 10)
-	print 'Ax = ', atmp
+	print ('Ax = ', atmp)
 	if re.search('\.0\Z', str(atmp)) != None:
 		atmp = int(atmp)
-		print atmp
+		print (atmp)
 	if atmp == 0:
 		return None, 0
 	if atmp == -1:
@@ -106,25 +111,26 @@ def add_up_xs(tab, pattern, ret=None, atmp=0):
 	return str(atmp) + ret, atmp
 
 def equation_degree(tab, lvl=2, degree=0):
-	print '*' * 10, 'Equation Degree', '*' * 10
+	print ('*' * 10, 'Equation Degree', '*' * 10)
 	for elem in tab:
 		if elem != None:
-			if re.search('\D\^\d+\Z', elem):
+			if re.search('(?<=\D\^)\d+\Z', elem):
 				tmp = re.search('\d+\Z', elem)
+				print '*' * 20, int(tmp.group()), elem
 				if int(tmp.group()) > lvl:
-					print 'TOO HIGH of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Max degree lvl =', lvl
+					print ('TOO HIGH of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Max degree lvl =', lvl)
 					exit()
 				elif int(tmp.group()) < 0:
-					print 'TOO LOW of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Min degree lvl =', 0
+					print ('TOO LOW of an equation degree:\n	- Current degree lvl =', tmp.group(), '\n	- Min degree lvl =', 0)
 					exit()
-				print tmp.group()
+				print (tmp.group())
 				if degree < int(tmp.group()):
 					degree = int(tmp.group())
-	print '*' * 10, 'Ended of Degree', '*' * 10
+	print ('*' * 10, 'Ended of Degree', '*' * 10)
 	return degree
 
 def send_to_degree(eqt, degr, lvl):
-	print 'Degree' , lvl
+	print( 'Degree' , lvl)
 	if lvl == 2:
 		degree_solve.second_degree(eqt, degr)
 	elif lvl == 1:
@@ -132,20 +138,23 @@ def send_to_degree(eqt, degr, lvl):
 	elif lvl == 0:
 		degree_solve.no_degree(degr[2])
 	else:
-		print 'Decide Later for bigger degrees'
+		print ('Decide Later for bigger degrees')
 		exit()
 
 def visu_color_test(arg):
 	pass
 
+args.str = normed_char(args.str, '[ \t]+')
 check_str('\A[0-9^ \.\=\+\-\*/xX]+\Z', args.str)
-left = re.sub(' - ', ' + -', args.str)
-left = re.sub('( \+ )', 'a', left)
-print 'Post sub + - : ', left
+left = normed_char(args.str, ' *\- ', ' + -')
+left = normed_char(args.str, ' *\+ *', 'a')
+#left = re.sub(' - ', ' + -', args.str)
+#left = re.sub('( \+ )', 'a', left)
+print( 'Post sub + - : ', left)
 right = left.split(' = ')
 left = right[0]
 right = right[1]
-print 'Post sub : \n', left, '\n', right
+print( 'Post sub : \n', left, '\n', right)
 tab_l = left.split('a')
 tab_r = right.split('a')
 
@@ -166,14 +175,13 @@ tab_r = side_prep(tab_r)
 debug_visu(tab_l, tab_r)
 tab_l = tab_l + tab_r
 debug_visu(tab_l)
-
 c = add_up_c(tab_l)
 bx, b = add_up_xs(tab_l, '\D\^1', ret='x^1')
 ax, a = add_up_xs(tab_l, '\D\^2', ret='x^2')
-print ax, '+', bx, '+', c, '= 0'
+print (ax, '+', bx, '+', c, '= 0')
 
 eqt = [ax, bx, str(c)]
 degr = [float(a), float(b) , float(c)]
 dgr = equation_degree(eqt)
-print 'My Degree = ', dgr
+print ('My Degree = ', dgr)
 send_to_degree(eqt, degr, dgr)
