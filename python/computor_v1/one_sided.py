@@ -11,10 +11,10 @@ class one_sided():
 		for elem in tab:
 			if is_all_float(elem) == True:
 				ctmp += float(elem)
-		print (ctmp)
+		# print (ctmp)
 		if re.search('\.0\Z', str(ctmp)) != None:
 			ctmp = int(ctmp)
-			print (ctmp)
+			# print (ctmp)
 		return ctmp
 
 	def add_up_xs(self, tab, pattern=None, ret=None, atmp=0):
@@ -26,15 +26,15 @@ class one_sided():
 					tmp = re.search('1', '1')
 				else:
 					tmp = re.search('(-*\d+\.*\d*)', elem)
-					print (tmp.group())
-					print ('---->', tmp.group())
+					# print (tmp.group())
+					# print ('---->', tmp.group())
 				atmp += float(tmp.group())
-				print (atmp)
+				# print (atmp)
 		atmp = round(atmp, 10)
-		print ('Ax = ', atmp)
+		# print ('Ax = ', atmp)
 		if re.search('\.0\Z', str(atmp)) != None:
 			atmp = int(atmp)
-			print (atmp)
+			# print (atmp)
 		if atmp == 0:
 			return None, 0
 		if atmp == -1:
@@ -54,14 +54,17 @@ class one_sided():
 		return tab
 
 	def lets_go(self, tab_l, tab_r):
+		print '+-'* 12, 'One Side to go', '+-'* 12, '+'
+		print tab_l, ' = ', tab_r
 		tab_r = self.side_prep(tab_r)
 		tab_l = tab_l + tab_r
 		c = self.add_up_c(tab_l)
 		bx, b = self.add_up_xs(tab_l, '\D\^1', ret='x^1')
 		ax, a = self.add_up_xs(tab_l, '\D\^2', ret='x^2')
-		print ('+-'* 25, '+')
-		print (ax, '+', bx, '+', c, '= 0')
-		print ('+-'* 25, '+')
+		print ax, '+', bx, '+', c, '= 0'
+		# print (ax, '+', bx, '+', c, '= 0')
+		print '+-'* 35, '+', '\n'
+		# print ('+-'* 25, '+')
 		eqt = [ax, bx, str(c)]
 		degr = [float(a), float(b) , float(c)]
 		return eqt, degr

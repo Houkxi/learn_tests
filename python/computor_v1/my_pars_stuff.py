@@ -45,25 +45,28 @@ class numerical_pars():
 
 	def fraction_shit(self, s):
 		#if re.search('((\d+\.\d+/\d+\.\d+)|(-\d+\.\d+/-\d+\.\d+))|((-\d+\.\d+/\d+\.\d+)|(\d+\.\d+/-\d+\.\d+)|(-\d+/-\d+)|(\d+/\d+)|(-\d+/\d+)|(\d+/-\d+))', s):
-		print (s)
+		# print ('Fraction shit :\n', s)
 		if re.search('-*\d+\.*\d*/-*\d+\.*\d*', s):
+			print 'Fraction shit :\n', s
 			a = re.search('\A-*\d+\.*\d*', s)
 			b = re.search('(?<=/)-*\d+\.*\d*(?=\D)', s)
 			a = float(a.group())
 			b = float(b.group())
-			print ('------>', a, b, float(a / b))
+			print '------> A', a, '<-> B', b, '<-> A/B', float(a / b)
+			# print ('------>', a, b, float(a / b))
 			tmp = str(a / b)
 			s = re.sub('-*\d+\.*\d*/*-*\d+\.*\d*', tmp, s)
-			print ('My floated version', s)
+			print 'My floated version', s, '\n'
+			# print ('My floated version', s)
 			return s
-		print ('Testing')
 		return s
 
 	def already_simplfied(self, s):
 		if re.search('(\d+\D\^\d+)|(-\d+\D\^\d+)', s) != None:
 			if  re.search('(\d+\D\^0)|(-\d+\D\^0)', s) != None:
 				s = re.sub('\D\^0', '', s)
-			print ('Already simplified')
+			print 'Already simplified'
+			# print ('Already simplified')
 			return s
 
 	def simplification(self, s):

@@ -10,7 +10,7 @@ def is_all_float(arg):
 def is_all_int(arg):
 	print (str(arg))
 	tmp = re.search('\.(?=[1-9]*)', str(arg))
-	print (tmp)
+	# print (tmp)
 	if  tmp != None:
 		return False
 	return True
@@ -18,20 +18,20 @@ def is_all_int(arg):
 def count_every_ten(nb, direction=0, show=0):
 	ct = 0
 	div = 10
-	print(is_all_int(nb), int(nb), nb)
+	# print(is_all_int(nb), int(nb), nb)
 	if direction >= 0:
 		while nb > 10:
 			nb = nb / div
 			ct += 1
-			if show != 0:
-				print (nb, '/', div)
+			# if show != 0:
+				# print nb, '/', div
 	elif direction < 0:
 		while is_all_int(nb) == False:
 			nb = nb * div
 			ct += 1
-			if show != 0:
-				print (nb, '*', div)
-	print ('Counter =', ct)
+			# if show != 0:
+				# print (nb, '*', div)
+	print 'Counter =', ct
 
 def group_in_twos_m(s, length):
 	x = -1
@@ -56,7 +56,7 @@ def group_in_twos_p(s, length):
 	x = 0
 	tmp1 = []
 	tmp2 = ''
-	print s
+	# print s
 	while (x + 1) <= length:
 		tmp2 = s[x]
 		if ((x + 1) < length):
@@ -69,20 +69,33 @@ def group_in_twos_p(s, length):
 	return tmp1
 
 def pars_number_in_pairs(nb):
-	print ('The number =', nb, 'str : ' + str(nb), is_all_float(nb))
+	print '=' * 20, 'Pars in pairs', '=' * 20
+	print 'The number =', nb, 'str : ' + str(nb), is_all_float(nb)
 	tmp = str(nb).split('.')
-	print tmp
+	# print tmp
 	left = group_in_twos_m(tmp[0], len(tmp[0]))
 	right = group_in_twos_p(tmp[1], len(tmp[1]))
 	left += ['.']
 	left += right
 	print (left)
+	print '=' * 55
 	return left
 
 def to_decimal(nb):
 	while nb > 1:
 		nb /= 10
 	return nb
+
+def find_perfect_sqr(nb):
+	i = 0
+	while (i * i) <= nb:
+		i += 1
+	i -= 1
+	if i < 0:
+		print 'Number negative in square fct'
+		exit ()
+	print 'Perfext square', i
+	return i
 
 def square_root(nb_grp):
 	i = 0
@@ -91,15 +104,19 @@ def square_root(nb_grp):
 	tmp = 0
 	res = 0
 	div = 1
+	print '%' * 20, 'SQUARE ROOT', '%' * 20
+	print nb_grp
 	while n * n <= float(nb_grp[0]):
 		n += 1
 	n -= 1
-	print n
 	res = float(n)
-	n = n * 2
+	if n > 1:
+		n = n * 2
 	while nb_grp[i] != '.':
 		if i == 0:
 			tmp = float(nb_grp[0]) - n
+			if n == 1:
+				n *= 2
 		print tmp, nb_grp[0]
 		if nb_grp[i + 1] == '.':
 			break;
@@ -110,7 +127,7 @@ def square_root(nb_grp):
 			print '((', n, '* 10) + ', m, ') * ', m
 			m += 1
 		m -= 1
-		print tmp, ' - ((', n, '* 10) + ', m, ') * ', m, ' = ', tmp - ((n * 10) + m) * m
+		print tmp, '- ((', n, '* 10) + ', m, ') * ', m, ' = ', tmp, '-', ((n * 10) + m) * m, '=', tmp - ((n * 10) + m) * m
 		tmp -= ((n * 10) + m) * m
 		res = (res * 10) + m
 		n = res * 2
@@ -124,11 +141,13 @@ def square_root(nb_grp):
 			print '((', n, '* 10) + ', m, ') * ', m
 			m += 1
 		m -= 1
+		print tmp, ' - ((', n, '* 10) + ', m, ') * ', m, ' = ', tmp - ((n * 10) + m) * m
 		tmp -= ((n * 10) + m) * m
 		res = (res * 10) + m
 		div *= 10
 		n = res * 2
 		m = 0
 		i += 1
-		print 'RES', res / div, ',', n
+	print 'RES', res / div, ',', n
+	print '%' * 55
 	return res / div

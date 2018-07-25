@@ -9,7 +9,9 @@ def one_value(a, b):
 
 def two_positives(delta, a, b):
 	print a, b, delta
-	my_math.count_every_ten(delta, direction=11, show=1)
+	# my_math.count_every_ten(delta, direction=11, show=1)
+	# tmp = my_math.find_perfect_sqr(delta)
+	# delta -= tmp * tmp
 	tmp = my_math.pars_number_in_pairs(delta)
 	nb = my_math.square_root(tmp)
 	b = b * -1
@@ -25,7 +27,7 @@ def second_degree(eqt, degr):
 	b = degr[1]
 	c = degr[2]
 	delta = (b * b) -4 * (a * c)
-	print ('Delta = ', delta)
+	print 'Delta = ', delta
 	if delta > 0:
 		two_positives(delta, a, b)
 	elif delta == 0:
