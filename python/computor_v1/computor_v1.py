@@ -18,7 +18,11 @@ if args.l is True:
 			print 'Not yet implemented, wait for computor v2'
 			exit()
 		if other == 'equation':
-			other = input('Write a second or lower degree equation :')
+			# other = input('Write a second or lower degree equation :
+			parser2 = argparse.ArgumentParser(description='Write a Second degree equation')
+			parser2.add_argument("s1", type=str)
+			ag = parser2.parse_args()
+			print ag
 			if re.search('\A[0-9^ \.\=\+\-\*/xX]+\Z', other):
 				args.str = other
 				break
