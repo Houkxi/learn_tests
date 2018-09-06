@@ -6,6 +6,9 @@ import sys
 fenetre = Tkinter.Tk()
 
 widget = Tkinter.Button(None)
+label = Tkinter.Label(None)
+label.config(text='Tests')
+label.pack()
 widget.config(text='Lets work', command=sys.exit)
 widget.pack(expand=Tkinter.YES, fill=Tkinter.X)
 # widget.pack()

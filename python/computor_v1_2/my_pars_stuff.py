@@ -1,6 +1,6 @@
 import re
 import argparse
-from my_math import is_all_float
+# from my_math import is_all_float
 
 class pars_class():
 	"""docstring for pars_class."""
@@ -29,14 +29,15 @@ class pars_class():
 		s = self.reshape_string(s, self.patts[0])
 		#s = self.reshape_string(s, '(?<=\ *-*)([xX])(?=\ \+*-*\Z?)', 'x^1', 'go')
 		self.chars_cmp_str(s, self.strch)
-		print 'Parsed string < ' + s + ' >'
 		s = self.reshape_string(s, self.patts[1], self.subs[0])
-		s = self.reshape_string(s, self.patts[2], self.subs[1])
-		tab_l = s.split(self.splits[0])
-		tab_r = tab_l[1]
-		tab_l = tab_l[0].split(self.splits[1])
-		tab_r = tab_r.split(self.splits[1])
-		return tab_l, tab_r
+		print 'Parsed string < ' + s + ' >'
+		return s
+		# s = self.reshape_string(s, self.patts[2], self.subs[1])
+		# tab_l = s.split(self.splits[0])
+		# tab_r = tab_l[1]
+		# tab_l = tab_l[0].split(self.splits[1])
+		# tab_r = tab_r.split(self.splits[1])
+		# return tab_l, tab_r
 
 class numerical_pars():
 	"""docstring for numerical_pars."""
