@@ -7,18 +7,11 @@ parser.add_argument('str', type=str, help='file')
 args = parser.parse_args()
 
 file_obj = open(args.str, 'r')
-
-###		Better readability		###
-# text = file_obj.read()
-# print text
-# sentences = text.split('\n')
-
 sentences = file_obj.read().split('\n')
 new_file = []
-i = 0
 facts = facts()
 facts.__init__(all_facts=facts.set_facts())
-print facts.allf
+print (facts.allf, "\n")
 
 for sent in sentences:
 	tmp = sent.split('#')[0]
@@ -28,8 +21,15 @@ for sent in sentences:
 		else:
 			new_file.append(tmp)
 
-
 for obj in new_file:
-	print obj
+	print (obj)
 
-print facts.allf
+print ("\n", facts.allf)
+
+def check_true(facts, list_cmd=0, goal=0):
+	check_goal(checks initial facts with goal, then checks list_cmd to find the instruction returns new goal)
+	if list_cmd == True:
+		return something and go back to what wasn't true'
+
+#try recursive python for the algorithm
+#A dictionary with the implications as keys

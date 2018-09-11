@@ -8,7 +8,7 @@ class facts():
 	def set_facts(self):
 		facts = {}
 		for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-			print letter
+			# print (letter)
 			facts[letter] = False
 		return facts
 
@@ -21,6 +21,14 @@ class facts():
 		# return self.allf
 
 
+class implications(own_facts=facts()):
+	"""docstring for implications."""
+	def __init__(self, cmd_line):
+		self.arg = cmd_line
+
+
+
+
 class instr_class():
 	"""docstring for instr_class."""
 	def __init__(self):
@@ -30,5 +38,6 @@ class instr_class():
 		pass
 
 	def line_pars(self, str):
-		hashed = priority_check(str)
+		if re.search("+", str):
+			and_cmd(str)
 		return object

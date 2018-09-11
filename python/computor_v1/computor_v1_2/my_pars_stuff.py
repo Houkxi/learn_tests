@@ -4,16 +4,22 @@ import argparse
 
 class pars_class():
 	"""docstring for pars_class."""
-	def __init__(self, str_check=None, pattern_tab=None, change_tab=None, split_tab=None):
+	def __init__(self, str_check=None):
 		self.strch = str_check
-		self.patts = pattern_tab
-		self.subs = change_tab
-		self.splits = split_tab
 
-	def reshape_string(self, s, pattern=' +', sub=' ', msg=None):
-		tmp = re.sub(pattern, sub, s)
-		if tmp:
-			return tmp
+	def reshape_string(self, s, pattern=[' +'], sub=[' '], msg=None):
+		i = 0
+		print (len(pattern), len(sub))
+		if len(pattern) != len(sub):
+			print ('In reshape_string not the same amount between pattern and sub')
+			exit()
+		while i < len(pattern):
+			tmp = re.sub(pattern[i], sub[i], s)
+			if tmp is None:
+				print ('REshape error')
+				exit()
+			s = tmp
+			i += 1
 		if msg != None:
 			print ('No patterns found in string')
 		return s
@@ -26,19 +32,19 @@ class pars_class():
 			exit ()
 
 	def nbrs_check(self, s):
-		print s
+		print (s)
 		tmp = re.search('(\d+ +(?=[^\+\-\*\/])\d+)|(\d+ +(?=[^\+\-\*\/])[xX])', s)
-		print tmp
+		print (tmp)
 		if tmp is not None:
 			print('No operator between numbers')
 			exit()
 
-	def check_init_str(self, s):
+	def check_init_str(self, s, pattern=None, sub=None):
 		self.chars_cmp_str(s, self.strch[0])
 		# self.chars_cmp_str(s, self.strch[1])
-		s = self.reshape_string(s, pattern=self.patts[0])
+		s = self.reshape_string(s, pattern=pattern, sub=sub)
 		self.nbrs_check(s)
-		print 'Checkeed string	< ' + s + ' >'
+		print ('Checkeed string	< ' + s + ' >')
 		return s
 
 
@@ -58,16 +64,16 @@ class numerical_pars():
 		#if re.search('((\d+\.\d+/\d+\.\d+)|(-\d+\.\d+/-\d+\.\d+))|((-\d+\.\d+/\d+\.\d+)|(\d+\.\d+/-\d+\.\d+)|(-\d+/-\d+)|(\d+/\d+)|(-\d+/\d+)|(\d+/-\d+))', s):
 		# print ('Fraction shit :\n', s)
 		if re.search('-*\d+\.*\d*/-*\d+\.*\d*', s):
-			print 'Fraction shit :\n', s
+			print ('Fraction shit :\n', s)
 			a = re.search('\A-*\d+\.*\d*', s)
 			b = re.search('(?<=/)-*\d+\.*\d*(?=\D)', s)
 			a = float(a.group())
 			b = float(b.group())
-			print '------> A', a, '<-> B', b, '<-> A/B', float(a / b)
+			print( '------> A', a, '<-> B', b, '<-> A/B', float(a / b))
 			# print ('------>', a, b, float(a / b))
 			tmp = str(a / b)
 			s = re.sub('-*\d+\.*\d*/*-*\d+\.*\d*', tmp, s)
-			print 'My floated version', s, '\n'
+			print ('My floated version', s, '\n')
 			# print ('My floated version', s)
 			return s
 		return s
@@ -76,7 +82,7 @@ class numerical_pars():
 		if re.search('(\d+\D\^\d+)|(-\d+\D\^\d+)', s) != None:
 			if  re.search('(\d+\D\^0)|(-\d+\D\^0)', s) != None:
 				s = re.sub('\D\^0', '', s)
-			print 'Already simplified'
+			print ('Already simplified')
 			# print ('Already simplified')
 			return s
 
