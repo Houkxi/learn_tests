@@ -29,7 +29,7 @@ re.search('\A[0-9]+\Z')
 ### API Tests
 
 - *IN PROGRESS*
-Learning how to create asimple api.
+- Learning how to create asimple api.
 #### Flask tutorial
 
 Followed the [flask](http://flask.pocoo.org/docs/1.0/tutorial/layout/) tutorial.
