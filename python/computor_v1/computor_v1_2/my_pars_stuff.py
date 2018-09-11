@@ -21,23 +21,32 @@ class pars_class():
 	def chars_cmp_str(self, s, cmp):
 		tmp = re.search(cmp, s)
 		if tmp == None:
-			print (s, cmp)
-			print ('Wrong character in equation, -help for more details')
+			# print (s, cmp)
+			print ('Wrong character in equation, -h for more details')
 			exit ()
 
-	def for_computor_v1(self, s):
-		s = self.reshape_string(s, self.patts[0])
-		#s = self.reshape_string(s, '(?<=\ *-*)([xX])(?=\ \+*-*\Z?)', 'x^1', 'go')
-		self.chars_cmp_str(s, self.strch)
-		s = self.reshape_string(s, self.patts[1], self.subs[0])
-		print 'Parsed string < ' + s + ' >'
+	def nbrs_check(self, s):
+		print s
+		tmp = re.search('(\d+ +(?=[^\+\-\*\/])\d+)|(\d+ +(?=[^\+\-\*\/])[xX])', s)
+		print tmp
+		if tmp is not None:
+			print('No operator between numbers')
+			exit()
+
+	def check_init_str(self, s):
+		self.chars_cmp_str(s, self.strch[0])
+		# self.chars_cmp_str(s, self.strch[1])
+		s = self.reshape_string(s, pattern=self.patts[0])
+		self.nbrs_check(s)
+		print 'Checkeed string	< ' + s + ' >'
 		return s
-		# s = self.reshape_string(s, self.patts[2], self.subs[1])
-		# tab_l = s.split(self.splits[0])
-		# tab_r = tab_l[1]
-		# tab_l = tab_l[0].split(self.splits[1])
-		# tab_r = tab_r.split(self.splits[1])
-		# return tab_l, tab_r
+
+
+class equation_object(object):
+	"""docstring for equation_object."""
+	def __init__(self, arg):
+		self.arg = arg
+
 
 class numerical_pars():
 	"""docstring for numerical_pars."""
