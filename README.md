@@ -20,15 +20,15 @@ args = parse.parse_args()
 re.search('\A[0-9]+\Z')
 ```
 
-*IN PROGRESS*
+-*IN PROGRESS*
 
 ### Expert System
 **No grade**
-*IN PROGRESS*
+-*IN PROGRESS*
 
 ### API Tests
 
-*IN PROGRESS*
+-*IN PROGRESS*
 Learning how to create asimple api.
 #### Flask tutorial
 
