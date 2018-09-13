@@ -43,3 +43,11 @@ def vote(request, question_id):
 		selected_choice.vote += 1
 		selected_choice.save()
 	return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
+
+def ideas(request):
+	return render(request, 'polls/question_form.html', {'error_message': 'Have to input a question'})
+
+def input_question(request, input_question):
+		question = Question
+		question.question_text = input_question
+		return HttpResponseRedirect(reverse('polls:ideas'))
