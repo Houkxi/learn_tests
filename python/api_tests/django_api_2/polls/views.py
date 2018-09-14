@@ -2,22 +2,34 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
-from rest_framework import generics
 from django.utils import timezone
 from .serializers import PollsSerializers
 from .models import Choice, Question
 
 
-class IndexView(generics.RetrieveAPIView):
-	queryset = Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-	serializer_class = PollsSerializers
-	look_field = "pk"
-	# def preform_create(self, serializer):
-	# 	serializer.save()
+class IndexView(generic.ListView):
+	template_name = 'polls/index.html'
+	context_object_name = 'latest_question_list'
 
-class DetailView(generics.RetrieveUpdateAPIView):
-	queryset = Question.objects.filter(pub_date__lte=timezone.now())
-	serializer_class = PollsSerializers
+	def get_queryset(self):
+		"""
+		Return the last five published questions (not including those set to be
+		published in the future).
+		"""
+		question = Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+		serialized = PollsSerializers(question, many=True)
+		print (repr(serialized))
+		return serialized.data
+
+class DetailView(generic.DetailView):
+	model = Question
+	serializers = PollsSerializers
+	template_name = 'polls/detail.html'
+	def get_queryset(self):
+		"""
+		Excludes any questions that aren't published yet.
+		"""
+		return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
