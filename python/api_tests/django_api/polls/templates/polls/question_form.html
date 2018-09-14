@@ -1,0 +1,7 @@
+<h1><title><strong>Input a Question & possible Choices</strong></title></h1>
+<form action="{% url 'polls:ideas' %}" method='post'>
+	{% csrf_token %}
+	<li><input type='text' name='question' placeholder='Question'></li>
+	<li><input type='text' name='choice' placeholder='Choice'></li>
+	<input type='submit' value='Send'>
+</form>

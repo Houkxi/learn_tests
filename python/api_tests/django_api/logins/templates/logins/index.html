@@ -1,7 +1,0 @@
-{% if logins_list %}
-	<ul>
-		<li><a href="{% url 'logins:register' logins_id %}"</a></li>
-	</ul>
-{% else %}
-	<li><a href="{% url 'logins:register' logins_id %}"</a></li>
-{% endif %}

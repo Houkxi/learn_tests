@@ -1,7 +1,0 @@
-{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
-
-<form action="{% url 'log:retrieve' %}" method="post">
-	{% csrf_token %}
-	<input type="text" name="username" value="{{}}"/>
-	<input type="submit" value="Register">
-</form>

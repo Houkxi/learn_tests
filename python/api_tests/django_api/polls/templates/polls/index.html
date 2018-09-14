@@ -11,3 +11,6 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+<ul>
+	<a href="{% url 'polls:ideas' %}" class="button">Input new question</a>
+</ul>
