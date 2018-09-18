@@ -2,32 +2,37 @@ import re
 import argparse
 # from my_math import is_all_float
 
-class pars_class():
-	"""docstring for pars_class."""
-	def __init__(self, str_check=None):
-		self.strch = str_check
-
-	def reshape_string(self, s, pattern=[' +'], sub=[' '], msg=None):
-		i = 0
-		print (len(pattern), len(sub))
-		if len(pattern) != len(sub):
-			print ('In reshape_string not the same amount between pattern and sub')
+def reshape_string(s, pattern=['[ \t]+'], sub=[' '], msg=None):
+	i = 0
+	print (len(pattern), len(sub))
+	if len(pattern) != len(sub):
+		print ('In reshape_string not the same amount between pattern and sub')
+		exit()
+	while i < len(pattern):
+		tmp = re.sub(pattern[i], sub[i], s)
+		if tmp is None:
+			print ('REshape error')
 			exit()
-		while i < len(pattern):
-			tmp = re.sub(pattern[i], sub[i], s)
-			if tmp is None:
-				print ('REshape error')
-				exit()
-			s = tmp
-			i += 1
-		if msg != None:
-			print ('No patterns found in string')
-		return s
+		s = tmp
+		i += 1
+	if msg != None:
+		print ('No patterns found in string')
+	return s
+
+class ParsedStringClass():
+	patterns = [
+	'\A[()0-9^ \.\=\+\-\*/xX]+\Z',
+	'\A(?<=[0-9^ \.\=\+\-\*/xX])+=(?=[0-9^ \.\=\+\-\*/xX])+\Z',
+	''
+	]
+	base_reshape = ['[ \t]+', 'X', '(?<=[^x])x ?(?=[0-9]+)', 'x(?=[^\^])']
+	base_sub = [' ', 'x', 'x^', 'x^1']
+	def __init__(self, string):
+		self.str = string
 
 	def chars_cmp_str(self, s, cmp):
 		tmp = re.search(cmp, s)
 		if tmp == None:
-			# print (s, cmp)
 			print ('Wrong character in equation, -h for more details')
 			exit ()
 
@@ -39,20 +44,55 @@ class pars_class():
 			print('No operator between numbers')
 			exit()
 
-	def check_init_str(self, s, pattern=None, sub=None):
-		self.chars_cmp_str(s, self.strch[0])
-		# self.chars_cmp_str(s, self.strch[1])
-		s = self.reshape_string(s, pattern=pattern, sub=sub)
+	def check_init_str(self):
+		s = self.str
+		self.chars_cmp_str(s, self.patterns[0])
+		s = reshape_string(s, pattern=self.base_reshape, sub=self.base_sub)
 		self.nbrs_check(s)
 		print ('Checkeed string	< ' + s + ' >')
 		return s
 
+def parentheses_checker(s):
+	count_left = 0
+	parentheses_regex = re.search('(?<=\() *-?\d+\.*\d* *[\+\-\*] *-?\d+\.*\d*(?=\))', s)
+	print ("Paren regex	", parentheses_regex)
+	s = reshape_string(s, pattern=['[0-9^ \.\=\+\-\*/xX]+'], sub=[''])
+	if s is not None:
+		for paren in s:
+			if paren == '(':
+				count_left += 1
+			elif paren == ')' and count_left > 0:
+				count_left -= 1
+			else:
+				print ('Error in parentheses, check their positions')
+				exit()
+	print (count_left)
+	if count_left != 0:
+		print ('Error in parentheses, check their positions')
+		exit()
+	return True
 
-class equation_object(object):
-	"""docstring for equation_object."""
-	def __init__(self, arg):
-		self.arg = arg
 
+class ParsOperandsClass(object):
+	patterns = [
+	' *\- ',
+	'(?<=[xX0-9]) *= *(?=[xX0-9])',
+	'(?<=[0-9()])\*',
+	'\*(?=[0-9()xX])',
+	'(?<=[0-9()])\+',
+	'\+(?=[0-9()xX])',
+	' *\* *(?=\()|(?<=\)) *\* *',
+	]
+	subs = [' + -', ' = ', ' *', '* ', ' +', '+ ', '']
+	def __init__(self, string):
+		self.str = string
+
+	def reshape_operands(self):
+		s = self.str
+		s = parentheses_checker(s)
+		s = reshape_string(s, pattern=self.patterns, sub=self.subs)
+		print ('Operand string	< ' + s + ' >')
+		return s
 
 class numerical_pars():
 	"""docstring for numerical_pars."""
